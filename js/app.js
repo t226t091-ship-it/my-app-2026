@@ -62,9 +62,66 @@ function addMemo() {
     saveMemos();
     renderMemos();
 
+    // --- Magic Effects ---
+    createMagicParticles();
+    triggerAnimalJoy();
+
     // Clear inputs
     memoTitleInput.value = '';
     memoContentInput.value = '';
+}
+
+// Function to create magic particles (stars, sparkles)
+function createMagicParticles() {
+    const particles = ['✨', '🌟', '🌸', '🍀', '✨'];
+    const container = document.body;
+    
+    for (let i = 0; i < 20; i++) {
+        const p = document.createElement('div');
+        p.className = 'magic-particle';
+        p.textContent = particles[Math.floor(Math.random() * particles.length)];
+        p.style.left = '50%';
+        p.style.top = '40%';
+        
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = 5 + Math.random() * 10;
+        const vx = Math.cos(angle) * velocity;
+        const vy = Math.sin(angle) * velocity;
+        
+        container.appendChild(p);
+        
+        let posX = window.innerWidth / 2;
+        let posY = window.innerHeight * 0.4;
+        let opacity = 1;
+        
+        const animate = () => {
+            posX += vx;
+            posY += vy;
+            opacity -= 0.02;
+            
+            p.style.left = posX + 'px';
+            p.style.top = posY + 'px';
+            p.style.opacity = opacity;
+            
+            if (opacity > 0) {
+                requestAnimationFrame(animate);
+            } else {
+                p.remove();
+            }
+        };
+        requestAnimationFrame(animate);
+    }
+}
+
+// Function to make animals "jump" with joy
+function triggerAnimalJoy() {
+    const animals = document.querySelectorAll('.decoration-layer::before, .decoration-layer::after, .owl, header::before');
+    // Note: ::before/::after are harder to animate via JS directly, 
+    // so we'll add a class to the container or specific elements
+    document.body.classList.add('animals-joy');
+    setTimeout(() => {
+        document.body.classList.remove('animals-joy');
+    }, 1000);
 }
 
 // Delete a memo
