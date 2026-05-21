@@ -1,14 +1,14 @@
 :root {
-    --primary-color: #5d3fd3; /* アイリスパープル */
-    --secondary-color: #a78bfa; /* 明るいラベンダー */
-    --accent-color: #00d2ff; /* 爽やかなスカイブルー */
-    --bg-color: #f3e8ff; /* 明るい薄紫 */
-    --card-bg: rgba(255, 255, 255, 0.4); /* より透明感のあるカード */
-    --text-color: #2d1b4e;
-    --text-muted: #6b46c1;
-    --border-color: rgba(167, 139, 250, 0.4);
-    --shadow: 0 10px 30px rgba(93, 63, 211, 0.15);
-    --glow: 0 0 15px rgba(0, 210, 255, 0.4);
+    --primary-color: #4b0082; /* インディゴ（魔法の夜） */
+    --secondary-color: #9370db; /* ミディアムパープル */
+    --accent-color: #00ffef; /* ネオンアクア（魔法の輝き） */
+    --bg-color: #1a0a2e; /* 深い紫の背景 */
+    --card-bg: rgba(255, 255, 255, 0.15); /* 半透明のカード */
+    --text-color: #e0d7f7;
+    --text-muted: #b19cd9;
+    --border-color: rgba(147, 112, 219, 0.5);
+    --shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    --glow: 0 0 20px rgba(147, 112, 219, 0.6);
     --transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -26,9 +26,9 @@
 
 body {
     font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-    background: linear-gradient(-45deg, #f3e8ff, #e0f2fe, #f0fdf4, #fffbeb);
+    background: linear-gradient(-45deg, #1a0a2e, #2d1b4e, #1b4d3e, #0a2e1f);
     background-size: 400% 400%;
-    animation: nebulaBG 15s ease infinite;
+    animation: nebulaBG 20s ease infinite;
     background-attachment: fixed;
     color: var(--text-color);
     line-height: 1.6;
@@ -56,8 +56,8 @@ body {
     bottom: 25px;
     right: 35px;
     font-size: 5rem;
-    opacity: 0.9;
-    filter: drop-shadow(0 0 15px rgba(255, 77, 77, 0.4));
+    opacity: 0.8;
+    filter: drop-shadow(0 0 20px #ff4d4d);
 }
 
 /* Decoration: Crystal */
@@ -67,8 +67,8 @@ body {
     bottom: 40px;
     left: 40px;
     font-size: 4.5rem;
-    opacity: 0.8;
-    filter: drop-shadow(0 0 20px rgba(0, 210, 255, 0.5));
+    opacity: 0.7;
+    filter: drop-shadow(0 0 25px var(--accent-color));
 }
 
 .extra-decor {
@@ -183,14 +183,15 @@ header::after {
 }
 
 header h1 {
-    font-size: 4rem;
+    color: var(--text-color);
+    font-size: 3.5rem;
     margin-bottom: 20px;
     letter-spacing: 4px;
     text-transform: uppercase;
-    background: linear-gradient(to right, #5d3fd3, #00d2ff, #7c3aed);
+    background: linear-gradient(to right, #b19cd9, var(--accent-color), #ffffff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
+    filter: drop-shadow(0 0 15px rgba(0, 255, 239, 0.5));
 }
 
 .search-container input {
@@ -203,7 +204,7 @@ header h1 {
     background-color: var(--card-bg);
     transition: var(--transition);
     font-size: 1.1rem;
-    color: var(--text-color);
+    color: white;
     box-shadow: var(--shadow);
     backdrop-filter: blur(10px);
 }
@@ -233,7 +234,7 @@ header h1 {
 
 .input-card:focus-within {
     transform: scale(1.02);
-    box-shadow: 0 15px 40px rgba(93, 63, 211, 0.1), var(--glow);
+    box-shadow: 0 15px 40px rgba(147, 112, 219, 0.3), var(--glow);
     border-color: var(--accent-color);
 }
 
@@ -244,18 +245,18 @@ header h1 {
     padding: 15px;
     outline: none;
     font-size: 1rem;
-    background-color: rgba(255, 255, 255, 0.5);
-    color: var(--text-color);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
     transition: var(--transition);
 }
 
 .input-card input::placeholder, .input-card textarea::placeholder {
-    color: #888;
+    color: #ccc;
 }
 
 .input-card input:focus, .input-card textarea:focus {
     border-color: var(--accent-color);
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .input-card button {
@@ -269,7 +270,7 @@ header h1 {
     font-weight: bold;
     font-size: 1.2rem;
     transition: 0.5s;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
     text-transform: uppercase;
     letter-spacing: 2px;
 }
@@ -301,17 +302,18 @@ header h1 {
 .memo-card:hover {
     transform: translateY(-12px) scale(1.04);
     border-color: var(--accent-color);
-    box-shadow: 0 20px 40px rgba(93, 63, 211, 0.1), var(--glow);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), var(--glow);
 }
 
 .memo-card h3 {
     margin-bottom: 15px;
     font-size: 1.4rem;
-    color: var(--primary-color);
+    color: var(--accent-color);
+    text-shadow: 0 0 10px rgba(0, 255, 239, 0.3);
 }
 
 .memo-card p {
-    color: #4a3a61;
+    color: #e0d7f7;
     white-space: pre-wrap;
     margin-bottom: 50px;
 }
@@ -329,9 +331,9 @@ header h1 {
 }
 
 .delete-btn {
-    background: rgba(167, 139, 250, 0.2);
+    background: rgba(147, 112, 219, 0.2);
     border: 1px solid var(--secondary-color);
-    color: var(--primary-color);
+    color: var(--text-color);
     cursor: pointer;
     font-size: 0.85rem;
     padding: 8px 16px;
