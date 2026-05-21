@@ -1,14 +1,15 @@
 :root {
     --primary-color: #2d5a27; /* 深い森の緑 */
     --secondary-color: #78a55a; /* 若草色 */
-    --accent-color: #e9edc9; /* 柔らかなクリーム色（アースカラー） */
-    --bg-color: #fefae0; /* 温かみのある背景色 */
-    --card-bg: rgba(255, 255, 255, 0.9);
-    --text-color: #283618; /* 濃いオリーブ色の文字 */
+    --accent-color: #ffd700; /* ゴールドのアクセント */
+    --bg-color: #fefae0;
+    --card-bg: rgba(255, 255, 255, 0.85);
+    --text-color: #283618;
     --text-muted: #606c38;
     --border-color: #ccd5ae;
-    --shadow: 0 10px 20px rgba(45, 90, 39, 0.1);
-    --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow: 0 10px 30px rgba(45, 90, 39, 0.2);
+    --glow: 0 0 15px rgba(255, 215, 0, 0.3);
+    --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 * {
@@ -17,9 +18,17 @@
     box-sizing: border-box;
 }
 
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 body {
     font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-    background: linear-gradient(135deg, #fefae0 0%, #faedcd 100%);
+    background: linear-gradient(-45deg, #fefae0, #faedcd, #e9edc9, #ccd5ae);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
     background-attachment: fixed;
     color: var(--text-color);
     line-height: 1.6;
@@ -36,11 +45,10 @@ body {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 1; /* コンテンツより前面、ただし input などは z-index 10 以上にする */
+    z-index: 1;
     overflow: hidden;
 }
 
-/* Decoration: Squirrel at the bottom right */
 .decoration-layer::before {
     content: '🐿️';
     position: absolute;
@@ -51,7 +59,6 @@ body {
     filter: drop-shadow(0 0 5px rgba(0,0,0,0.1));
 }
 
-/* Decoration: Rabbit at the bottom left */
 .decoration-layer::after {
     content: '🐇';
     position: absolute;
@@ -61,7 +68,6 @@ body {
     opacity: 0.5;
 }
 
-/* Extra Animals */
 .extra-decor {
     position: fixed;
     top: 0;
@@ -97,7 +103,6 @@ body {
     100% { transform: translate(110vw, 45vh) rotate(0deg); }
 }
 
-/* Header Decorations */
 header {
     text-align: center;
     margin-bottom: 50px;
@@ -110,9 +115,9 @@ header::before {
     position: absolute;
     top: -10px;
     left: 10%;
-    font-size: 2rem;
+    font-size: 2.5rem;
     transform: rotate(-15deg);
-    opacity: 0.7;
+    opacity: 0.8;
     animation: bobbing 3s infinite ease-in-out;
 }
 
@@ -121,8 +126,8 @@ header::after {
     position: absolute;
     top: 20px;
     right: 10%;
-    font-size: 1.8rem;
-    opacity: 0.5;
+    font-size: 2.2rem;
+    opacity: 0.6;
     animation: swaying 4s infinite ease-in-out;
 }
 
@@ -134,18 +139,18 @@ header::after {
     display: flex;
     justify-content: space-around;
     pointer-events: none;
-    font-size: 1.5rem;
-    opacity: 0.4;
+    font-size: 1.8rem;
+    opacity: 0.5;
 }
 
 @keyframes bobbing {
     0%, 100% { transform: translateY(0) rotate(-15deg); }
-    50% { transform: translateY(-10px) rotate(-10deg); }
+    50% { transform: translateY(-15px) rotate(-10deg); }
 }
 
 @keyframes swaying {
     0%, 100% { transform: rotate(0); }
-    50% { transform: rotate(10deg); }
+    50% { transform: rotate(15deg); }
 }
 
 .container {
@@ -158,56 +163,67 @@ header::after {
 
 header h1 {
     color: var(--primary-color);
-    font-size: 3rem;
+    font-size: 3.5rem;
     margin-bottom: 20px;
-    letter-spacing: 2px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    background: linear-gradient(to right, #2d5a27, #78a55a, #ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
 }
 
 .search-container input {
     width: 100%;
     max-width: 460px;
-    padding: 14px 25px;
+    padding: 16px 28px;
     border: 2px solid var(--border-color);
-    border-radius: 30px;
+    border-radius: 40px;
     outline: none;
     background-color: var(--card-bg);
     transition: var(--transition);
-    font-size: 1rem;
+    font-size: 1.1rem;
     color: var(--text-color);
+    box-shadow: var(--shadow);
 }
 
 .search-container input:focus {
-    border-color: var(--secondary-color);
-    box-shadow: 0 0 15px rgba(120, 165, 90, 0.2);
-    transform: scale(1.02);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3), var(--shadow);
+    transform: scale(1.03);
 }
 
-/* Input Section */
 .input-section {
     margin-bottom: 50px;
 }
 
 .input-card {
     background: var(--card-bg);
-    padding: 30px;
-    border-radius: 20px;
+    padding: 35px;
+    border-radius: 30px;
     box-shadow: var(--shadow);
     display: flex;
     flex-direction: column;
     gap: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(5px);
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    transition: var(--transition);
+}
+
+.input-card:focus-within {
+    transform: scale(1.02);
+    box-shadow: 0 15px 40px rgba(45, 90, 39, 0.3), var(--glow);
+    border-color: var(--accent-color);
 }
 
 .input-card input, .input-card textarea {
     width: 100%;
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 15px;
     padding: 15px;
     outline: none;
     font-size: 1rem;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.8);
     transition: var(--transition);
 }
 
@@ -216,62 +232,62 @@ header h1 {
     background-color: #ffffff;
 }
 
-.input-card textarea {
-    resize: none;
-}
-
 .input-card button {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background: linear-gradient(135deg, #2d5a27 0%, #78a55a 50%, #ffd700 100%);
+    background-size: 200% auto;
     color: white;
     border: none;
-    padding: 15px;
-    border-radius: 12px;
+    padding: 18px;
+    border-radius: 18px;
     cursor: pointer;
     font-weight: bold;
-    font-size: 1.1rem;
-    transition: var(--transition);
-    box-shadow: 0 4px 10px rgba(45, 90, 39, 0.3);
+    font-size: 1.2rem;
+    transition: 0.5s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .input-card button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(45, 90, 39, 0.4);
-    filter: brightness(1.1);
+    background-position: right center;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
 }
 
-/* Memo List */
 .memo-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
+    gap: 30px;
 }
 
 .memo-card {
     background: var(--card-bg);
     padding: 25px;
-    border-radius: 20px;
+    border-radius: 30px;
     box-shadow: var(--shadow);
     position: relative;
     transition: var(--transition);
     animation: slideIn 0.6s ease-out;
-    border-left: 5px solid var(--secondary-color);
+    border: 2px solid transparent;
+    backdrop-filter: blur(5px);
 }
 
 .memo-card:hover {
-    transform: translateY(-8px) rotate(1deg);
-    box-shadow: 0 15px 30px rgba(45, 90, 39, 0.15);
+    transform: translateY(-12px) scale(1.04);
+    border-color: var(--accent-color);
+    box-shadow: 0 25px 50px rgba(45, 90, 39, 0.2), var(--glow);
 }
 
 .memo-card h3 {
     margin-bottom: 15px;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     color: var(--primary-color);
 }
 
 .memo-card p {
     color: var(--text-muted);
     white-space: pre-wrap;
-    margin-bottom: 45px;
+    margin-bottom: 50px;
 }
 
 .memo-card .memo-footer {
@@ -282,43 +298,44 @@ header h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: var(--text-muted);
 }
 
 .delete-btn {
-    background: var(--accent-color);
-    border: none;
+    background: rgba(255, 215, 0, 0.2);
+    border: 1px solid var(--accent-color);
     color: var(--primary-color);
     cursor: pointer;
-    font-size: 0.8rem;
-    padding: 6px 12px;
-    border-radius: 15px;
+    font-size: 0.85rem;
+    padding: 8px 16px;
+    border-radius: 20px;
     transition: var(--transition);
 }
 
 .delete-btn:hover {
-    background-color: #ffccd5; /* 削除時は少し赤みのある警告色に */
+    background-color: #ffccd5;
+    border-color: #ff4d4d;
     color: #c9184a;
+    transform: scale(1.1);
 }
 
-/* Empty State */
 .empty-state {
     text-align: center;
     padding: 60px;
     color: var(--text-muted);
     font-style: italic;
+    font-size: 1.2rem;
 }
 
 @keyframes slideIn {
-    from { opacity: 0; transform: translateY(30px); }
+    from { opacity: 0; transform: translateY(40px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Mobile Responsive */
 @media (max-width: 600px) {
     header h1 {
-        font-size: 2.2rem;
+        font-size: 2.5rem;
     }
     .container {
         padding: 20px 15px;
@@ -326,10 +343,6 @@ header h1 {
     .memo-list {
         grid-template-columns: 1fr;
     }
-    header::before {
-        left: 5%;
-    }
-    header::after {
-        right: 5%;
-    }
+    header::before { left: 2%; }
+    header::after { right: 2%; }
 }
