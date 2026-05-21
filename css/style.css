@@ -1,15 +1,15 @@
 :root {
-    --primary-color: #2d5a27; /* 深い森の緑 */
-    --secondary-color: #78a55a; /* 若草色 */
-    --accent-color: #ffd700; /* ゴールドのアクセント */
-    --bg-color: #fefae0;
-    --card-bg: rgba(255, 255, 255, 0.85);
-    --text-color: #283618;
-    --text-muted: #606c38;
-    --border-color: #ccd5ae;
-    --shadow: 0 10px 30px rgba(45, 90, 39, 0.2);
-    --glow: 0 0 15px rgba(255, 215, 0, 0.3);
-    --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --primary-color: #4b0082; /* インディゴ（魔法の夜） */
+    --secondary-color: #9370db; /* ミディアムパープル */
+    --accent-color: #00ffef; /* ネオンアクア（魔法の輝き） */
+    --bg-color: #1a0a2e; /* 深い紫の背景 */
+    --card-bg: rgba(255, 255, 255, 0.15); /* 半透明のカード */
+    --text-color: #e0d7f7;
+    --text-muted: #b19cd9;
+    --border-color: rgba(147, 112, 219, 0.5);
+    --shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    --glow: 0 0 20px rgba(147, 112, 219, 0.6);
+    --transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 * {
@@ -18,7 +18,7 @@
     box-sizing: border-box;
 }
 
-@keyframes gradientBG {
+@keyframes nebulaBG {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
@@ -26,9 +26,9 @@
 
 body {
     font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-    background: linear-gradient(-45deg, #fefae0, #faedcd, #e9edc9, #ccd5ae);
+    background: linear-gradient(-45deg, #1a0a2e, #2d1b4e, #1b4d3e, #0a2e1f);
     background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
+    animation: nebulaBG 20s ease infinite;
     background-attachment: fixed;
     color: var(--text-color);
     line-height: 1.6;
@@ -49,24 +49,26 @@ body {
     overflow: hidden;
 }
 
+/* Decoration: Magic Mushroom */
 .decoration-layer::before {
-    content: '🐿️';
+    content: '🍄';
     position: absolute;
     bottom: 25px;
     right: 35px;
-    font-size: 4.5rem;
-    opacity: 0.75;
-    filter: drop-shadow(0 0 10px rgba(0,0,0,0.15));
+    font-size: 5rem;
+    opacity: 0.8;
+    filter: drop-shadow(0 0 20px #ff4d4d);
 }
 
+/* Decoration: Crystal */
 .decoration-layer::after {
-    content: '🐇';
+    content: '💎';
     position: absolute;
-    bottom: 25px;
-    left: 35px;
-    font-size: 4.2rem;
+    bottom: 40px;
+    left: 40px;
+    font-size: 4.5rem;
     opacity: 0.7;
-    filter: drop-shadow(0 0 10px rgba(0,0,0,0.1));
+    filter: drop-shadow(0 0 25px var(--accent-color));
 }
 
 .extra-decor {
@@ -86,6 +88,24 @@ body {
     font-size: 3.5rem;
     opacity: 0.6;
     transform: rotate(10deg);
+    filter: drop-shadow(0 0 15px #ffd700);
+}
+
+/* Decoration: Fairy floating around */
+.fairy {
+    position: fixed;
+    font-size: 3rem;
+    opacity: 0.8;
+    z-index: 1;
+    filter: drop-shadow(0 0 15px var(--accent-color));
+    animation: fairy-flight 12s infinite ease-in-out;
+    pointer-events: none;
+}
+
+@keyframes fairy-flight {
+    0%, 100% { transform: translate(10vw, 20vh) rotate(10deg); }
+    33% { transform: translate(80vw, 60vh) rotate(-10deg); }
+    66% { transform: translate(40vw, 80vh) rotate(5deg); }
 }
 
 .butterfly {
@@ -163,15 +183,15 @@ header::after {
 }
 
 header h1 {
-    color: var(--primary-color);
+    color: var(--text-color);
     font-size: 3.5rem;
     margin-bottom: 20px;
     letter-spacing: 4px;
     text-transform: uppercase;
-    background: linear-gradient(to right, #2d5a27, #78a55a, #ffd700);
+    background: linear-gradient(to right, #b19cd9, var(--accent-color), #ffffff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+    filter: drop-shadow(0 0 15px rgba(0, 255, 239, 0.5));
 }
 
 .search-container input {
@@ -184,13 +204,14 @@ header h1 {
     background-color: var(--card-bg);
     transition: var(--transition);
     font-size: 1.1rem;
-    color: var(--text-color);
+    color: white;
     box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
 }
 
 .search-container input:focus {
     border-color: var(--accent-color);
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3), var(--shadow);
+    box-shadow: 0 0 25px var(--accent-color), var(--shadow);
     transform: scale(1.03);
 }
 
@@ -206,35 +227,40 @@ header h1 {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(15px);
     transition: var(--transition);
 }
 
 .input-card:focus-within {
     transform: scale(1.02);
-    box-shadow: 0 15px 40px rgba(45, 90, 39, 0.3), var(--glow);
+    box-shadow: 0 15px 40px rgba(147, 112, 219, 0.3), var(--glow);
     border-color: var(--accent-color);
 }
 
 .input-card input, .input-card textarea {
     width: 100%;
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color);
     border-radius: 15px;
     padding: 15px;
     outline: none;
     font-size: 1rem;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
     transition: var(--transition);
 }
 
+.input-card input::placeholder, .input-card textarea::placeholder {
+    color: #ccc;
+}
+
 .input-card input:focus, .input-card textarea:focus {
-    border-color: var(--secondary-color);
-    background-color: #ffffff;
+    border-color: var(--accent-color);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .input-card button {
-    background: linear-gradient(135deg, #2d5a27 0%, #78a55a 50%, #ffd700 100%);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, var(--accent-color) 100%);
     background-size: 200% auto;
     color: white;
     border: none;
@@ -244,15 +270,15 @@ header h1 {
     font-weight: bold;
     font-size: 1.2rem;
     transition: 0.5s;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
 }
 
 .input-card button:hover {
     background-position: right center;
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+    box-shadow: 0 8px 25px var(--accent-color);
 }
 
 .memo-list {
@@ -268,25 +294,26 @@ header h1 {
     box-shadow: var(--shadow);
     position: relative;
     transition: var(--transition);
-    animation: slideIn 0.6s ease-out;
-    border: 2px solid transparent;
-    backdrop-filter: blur(5px);
+    animation: slideIn 0.8s ease-out;
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(10px);
 }
 
 .memo-card:hover {
     transform: translateY(-12px) scale(1.04);
     border-color: var(--accent-color);
-    box-shadow: 0 25px 50px rgba(45, 90, 39, 0.2), var(--glow);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), var(--glow);
 }
 
 .memo-card h3 {
     margin-bottom: 15px;
     font-size: 1.4rem;
-    color: var(--primary-color);
+    color: var(--accent-color);
+    text-shadow: 0 0 10px rgba(0, 255, 239, 0.3);
 }
 
 .memo-card p {
-    color: var(--text-muted);
+    color: #e0d7f7;
     white-space: pre-wrap;
     margin-bottom: 50px;
 }
@@ -304,9 +331,9 @@ header h1 {
 }
 
 .delete-btn {
-    background: rgba(255, 215, 0, 0.2);
-    border: 1px solid var(--accent-color);
-    color: var(--primary-color);
+    background: rgba(147, 112, 219, 0.2);
+    border: 1px solid var(--secondary-color);
+    color: var(--text-color);
     cursor: pointer;
     font-size: 0.85rem;
     padding: 8px 16px;
@@ -315,9 +342,9 @@ header h1 {
 }
 
 .delete-btn:hover {
-    background-color: #ffccd5;
+    background-color: rgba(255, 77, 77, 0.3);
     border-color: #ff4d4d;
-    color: #c9184a;
+    color: #ffffff;
     transform: scale(1.1);
 }
 
@@ -336,26 +363,34 @@ header h1 {
     font-size: 1.5rem;
     z-index: 100;
     user-select: none;
+    filter: drop-shadow(0 0 10px var(--accent-color));
 }
 
 /* Animal Joy Animation */
 @keyframes jump-joy {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-30px) scale(1.1); }
+    50% { transform: translateY(-40px) scale(1.2); }
 }
 
 .animals-joy .decoration-layer::before,
 .animals-joy .decoration-layer::after,
 .animals-joy .extra-decor .owl,
+.animals-joy .extra-decor .fairy,
 .animals-joy header::before {
     animation: jump-joy 0.5s ease 2 !important;
 }
 
 /* Body and Interactive Polish */
 body {
-    /* ... previous styles ... */
-    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🪄</text></svg>"), auto; /* 🪄 マジックカーソル */
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🪄</text></svg>"), auto;
 }
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
     header h1 {
         font-size: 2.5rem;
     }
