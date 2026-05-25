@@ -5,9 +5,24 @@ const addMemoBtn = document.getElementById('addMemoBtn');
 const memoListContainer = document.getElementById('memoList');
 const searchInput = document.getElementById('searchInput');
 const emptyState = document.getElementById('emptyState');
+const fairy = document.getElementById('fairy');
+const fairySpeech = document.getElementById('fairySpeech');
 
 // Application State
 let memos = [];
+const fairyDialogues = [
+    "✨ 魔法の時間だよ！",
+    "🌸 今日もいい日になるね",
+    "🌟 メモを忘れないでね",
+    "🍀 何かお手伝いしましょうか？",
+    "🌈 素敵なアイデアが浮かぶかも！",
+    "🦋 ふわふわ〜、いい気分！",
+    "💫 魔法のインクで書いちゃおう",
+    "🎵 楽しいことをメモしようね",
+    "🔮 未来の自分へのメッセージ？",
+    "🍃 風が気持ちいいね"
+];
+let fairySpeechTimeout;
 
 // Initialize App
 function init() {
@@ -33,6 +48,29 @@ function saveMemos() {
 function setupEventListeners() {
     addMemoBtn.addEventListener('click', addMemo);
     searchInput.addEventListener('input', handleSearch);
+    
+    if (fairy) {
+        fairy.addEventListener('click', showFairyDialogue);
+    }
+}
+
+// Function to show fairy dialogue
+function showFairyDialogue() {
+    if (!fairySpeech) return;
+
+    // Clear existing timeout if any
+    if (fairySpeechTimeout) {
+        clearTimeout(fairySpeechTimeout);
+    }
+
+    const randomText = fairyDialogues[Math.floor(Math.random() * fairyDialogues.length)];
+    fairySpeech.textContent = randomText;
+    fairySpeech.classList.add('show');
+
+    // Hide after 3 seconds
+    fairySpeechTimeout = setTimeout(() => {
+        fairySpeech.classList.remove('show');
+    }, 3000);
 }
 
 // Add a new memo
