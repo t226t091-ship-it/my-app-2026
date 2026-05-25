@@ -1,4 +1,4 @@
-# Simple Memo App
+# FANTASY MEMO App
 
 HTML/CSS/JavaScriptで作成した、シンプルで使いやすいメモアプリケーションです。
 
