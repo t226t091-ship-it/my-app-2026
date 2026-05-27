@@ -247,17 +247,67 @@ header h1 {
     backdrop-filter: blur(10px);
 }
 
-.search-container input:focus {
+.controls-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.filter-sort-container {
+    display: flex;
+    gap: 15px;
+}
+
+.filter-sort-container select, .input-header select {
+    padding: 10px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    background-color: var(--card-bg);
+    color: white;
+    outline: none;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: var(--transition);
+}
+
+.filter-sort-container select:focus, .input-header select:focus {
     border-color: var(--accent-color);
-    box-shadow: 0 0 25px var(--accent-color), var(--shadow);
-    transform: scale(1.03);
+    box-shadow: 0 0 15px var(--accent-color);
 }
 
-.input-section {
-    margin-bottom: 50px;
+.input-header {
+    display: flex;
+    gap: 15px;
 }
 
-.input-card {
+.input-header input {
+    flex: 2;
+}
+
+.input-header select {
+    flex: 1;
+}
+
+/* Attribute-specific card themes */
+.memo-card.attr-fire { border-color: #ff4d4d; box-shadow: 0 0 15px rgba(255, 77, 77, 0.3); }
+.memo-card.attr-water { border-color: #4da6ff; box-shadow: 0 0 15px rgba(77, 166, 255, 0.3); }
+.memo-card.attr-earth { border-color: #4dff4d; box-shadow: 0 0 15px rgba(77, 255, 77, 0.3); }
+.memo-card.attr-wind { border-color: #4dffdb; box-shadow: 0 0 15px rgba(77, 255, 219, 0.3); }
+.memo-card.attr-light { border-color: #ffff4d; box-shadow: 0 0 15px rgba(255, 255, 77, 0.3); }
+.memo-card.attr-dark { border-color: #a64dff; box-shadow: 0 0 15px rgba(166, 77, 255, 0.3); }
+
+.attribute-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.memo-list {
     background: var(--card-bg);
     padding: 35px;
     border-radius: 30px;

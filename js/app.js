@@ -1,11 +1,14 @@
 // DOM Elements
 const memoTitleInput = document.getElementById('memoTitle');
 const memoContentInput = document.getElementById('memoContent');
+const memoAttributeInput = document.getElementById('memoAttribute');
 const editingIdInput = document.getElementById('editingId');
 const addMemoBtn = document.getElementById('addMemoBtn');
 const cancelEditBtn = document.getElementById('cancelEditBtn');
 const memoListContainer = document.getElementById('memoList');
 const searchInput = document.getElementById('searchInput');
+const attributeFilter = document.getElementById('attributeFilter');
+const sortOrderSelect = document.getElementById('sortOrder');
 const emptyState = document.getElementById('emptyState');
 const fairy = document.getElementById('fairy');
 const fairySpeech = document.getElementById('fairySpeech');
@@ -13,13 +16,24 @@ const fairySpeech = document.getElementById('fairySpeech');
 // Application State
 let memos = [];
 let isEditing = false;
+
+const attributeMap = {
+    none: { label: '', class: '' },
+    fire: { label: '🔥 火', class: 'attr-fire' },
+    water: { label: '💧 水', class: 'attr-water' },
+    earth: { label: '🌱 地', class: 'attr-earth' },
+    wind: { label: '🍃 風', class: 'attr-wind' },
+    light: { label: '✨ 光', class: 'attr-light' },
+    dark: { label: '🔮 闇', class: 'attr-dark' }
+};
+
 const fairyDialogues = [
     "✨ 魔法の時間だよ！",
     "🌸 今日もいい日になるね",
     "🌟 メモを忘れないでね",
     "🍀 何かお手伝いしましょうか？",
     "🌈 素敵なアイデアが浮かぶかも！",
-    "🦋 ふわふわ〜、いい気分！",
+    "🦋 ふわふわ〜, いい気分！",
     "💫 魔法のインクで書いちゃおう",
     "🎵 楽しいことをメモしようね",
     "🔮 未来の自分へのメッセージ？",
@@ -51,7 +65,9 @@ function saveMemos() {
 function setupEventListeners() {
     addMemoBtn.addEventListener('click', handleAddOrUpdate);
     cancelEditBtn.addEventListener('click', cancelEdit);
-    searchInput.addEventListener('input', handleSearch);
+    searchInput.addEventListener('input', () => renderMemos());
+    attributeFilter.addEventListener('change', () => renderMemos());
+    sortOrderSelect.addEventListener('change', () => renderMemos());
     
     if (fairy) {
         fairy.addEventListener('click', showFairyDialogue);
@@ -81,6 +97,7 @@ function showFairyDialogue() {
 function handleAddOrUpdate() {
     const title = memoTitleInput.value.trim();
     const content = memoContentInput.value.trim();
+    const attribute = memoAttributeInput.value;
 
     if (!content) {
         alert('内容を入力してください！');
@@ -88,19 +105,21 @@ function handleAddOrUpdate() {
     }
 
     if (isEditing) {
-        updateMemo(title, content);
+        updateMemo(title, content, attribute);
     } else {
-        addMemo(title, content);
+        addMemo(title, content, attribute);
     }
 }
 
 // Add a new memo
-function addMemo(title, content) {
+function addMemo(title, content, attribute) {
     const newMemo = {
         id: Date.now(),
         title: title || '無題のメモ',
         content: content,
-        date: formatDate(new Date())
+        attribute: attribute,
+        date: formatDate(new Date()),
+        timestamp: Date.now()
     };
 
     memos.unshift(newMemo);
@@ -122,6 +141,7 @@ function editMemo(id) {
 
     memoTitleInput.value = memo.title === '無題のメモ' ? '' : memo.title;
     memoContentInput.value = memo.content;
+    memoAttributeInput.value = memo.attribute || 'none';
     editingIdInput.value = id;
     
     isEditing = true;
@@ -133,7 +153,7 @@ function editMemo(id) {
 }
 
 // Update an existing memo
-function updateMemo(title, content) {
+function updateMemo(title, content, attribute) {
     const id = parseInt(editingIdInput.value);
     const index = memos.findIndex(m => m.id === id);
     
@@ -142,6 +162,7 @@ function updateMemo(title, content) {
             ...memos[index],
             title: title || '無題のメモ',
             content: content,
+            attribute: attribute,
             date: formatDate(new Date()) + ' (更新済)'
         };
         
@@ -166,6 +187,7 @@ function cancelEdit() {
 function clearInputs() {
     memoTitleInput.value = '';
     memoContentInput.value = '';
+    memoAttributeInput.value = 'none';
     editingIdInput.value = '';
 }
 
@@ -225,8 +247,6 @@ function createMagicParticles() {
 // Function to make animals "jump" with joy
 function triggerAnimalJoy() {
     const animals = document.querySelectorAll('.decoration-layer::before, .decoration-layer::after, .owl, header::before');
-    // Note: ::before/::after are harder to animate via JS directly, 
-    // so we'll add a class to the container or specific elements
     document.body.classList.add('animals-joy');
     setTimeout(() => {
         document.body.classList.remove('animals-joy');
@@ -247,20 +267,35 @@ function deleteMemo(id) {
     }
 }
 
-// Handle Search
-function handleSearch() {
+// Handle Filtering and Sorting
+function getFilteredAndSortedMemos() {
     const searchTerm = searchInput.value.toLowerCase();
-    renderMemos(searchTerm);
+    const filterAttr = attributeFilter.value;
+    const sortOrder = sortOrderSelect.value;
+
+    let result = memos.filter(memo => {
+        const matchesSearch = memo.title.toLowerCase().includes(searchTerm) || 
+                             memo.content.toLowerCase().includes(searchTerm);
+        const matchesAttr = filterAttr === 'all' || memo.attribute === filterAttr;
+        return matchesSearch && matchesAttr;
+    });
+
+    // Apply Sorting
+    result.sort((a, b) => {
+        if (sortOrder === 'newest') return (b.timestamp || b.id) - (a.timestamp || a.id);
+        if (sortOrder === 'oldest') return (a.timestamp || a.id) - (b.timestamp || b.id);
+        if (sortOrder === 'title') return a.title.localeCompare(b.title, 'ja');
+        return 0;
+    });
+
+    return result;
 }
 
 // Render Memos to UI
-function renderMemos(filter = '') {
+function renderMemos() {
     memoListContainer.innerHTML = '';
 
-    const filteredMemos = memos.filter(memo => 
-        memo.title.toLowerCase().includes(filter) || 
-        memo.content.toLowerCase().includes(filter)
-    );
+    const filteredMemos = getFilteredAndSortedMemos();
 
     if (filteredMemos.length === 0) {
         emptyState.style.display = 'block';
@@ -269,9 +304,11 @@ function renderMemos(filter = '') {
         
         filteredMemos.forEach(memo => {
             const memoCard = document.createElement('div');
-            memoCard.className = 'memo-card';
+            const attrInfo = attributeMap[memo.attribute || 'none'];
+            memoCard.className = `memo-card ${attrInfo.class}`;
             
             memoCard.innerHTML = `
+                ${attrInfo.label ? `<span class="attribute-badge">${attrInfo.label}</span>` : ''}
                 <h3>${escapeHTML(memo.title)}</h3>
                 <p>${escapeHTML(memo.content)}</p>
                 <div class="memo-footer">

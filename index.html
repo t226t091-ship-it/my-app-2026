@@ -26,8 +26,26 @@
                 <span>🌺</span>
             </div>
             <h1>FANTASY MEMO</h1>
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="メモを検索...">
+            <div class="controls-container">
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="メモを検索...">
+                </div>
+                <div class="filter-sort-container">
+                    <select id="attributeFilter">
+                        <option value="all">すべての属性</option>
+                        <option value="fire">🔥 火 (重要)</option>
+                        <option value="water">💧 水 (日常)</option>
+                        <option value="earth">🌱 地 (記録)</option>
+                        <option value="wind">🍃 風 (アイデア)</option>
+                        <option value="light">✨ 光 (目標)</option>
+                        <option value="dark">🔮 闇 (秘密)</option>
+                    </select>
+                    <select id="sortOrder">
+                        <option value="newest">新しい順</option>
+                        <option value="oldest">古い順</option>
+                        <option value="title">タイトル順</option>
+                    </select>
+                </div>
             </div>
         </header>
 
@@ -35,7 +53,18 @@
             <section class="input-section">
                 <div class="input-card">
                     <input type="hidden" id="editingId">
-                    <input type="text" id="memoTitle" placeholder="タイトル（任意）">
+                    <div class="input-header">
+                        <input type="text" id="memoTitle" placeholder="タイトル（任意）">
+                        <select id="memoAttribute">
+                            <option value="none">属性なし</option>
+                            <option value="fire">🔥 火</option>
+                            <option value="water">💧 水</option>
+                            <option value="earth">🌱 地</option>
+                            <option value="wind">🍃 風</option>
+                            <option value="light">✨ 光</option>
+                            <option value="dark">🔮 闇</option>
+                        </select>
+                    </div>
                     <textarea id="memoContent" placeholder="メモを入力..." rows="3"></textarea>
                     <div class="button-group">
                         <button id="addMemoBtn">追加</button>
