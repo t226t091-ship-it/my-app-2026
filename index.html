@@ -34,9 +34,13 @@
         <main>
             <section class="input-section">
                 <div class="input-card">
+                    <input type="hidden" id="editingId">
                     <input type="text" id="memoTitle" placeholder="タイトル（任意）">
                     <textarea id="memoContent" placeholder="メモを入力..." rows="3"></textarea>
-                    <button id="addMemoBtn">追加</button>
+                    <div class="button-group">
+                        <button id="addMemoBtn">追加</button>
+                        <button id="cancelEditBtn" class="hidden">キャンセル</button>
+                    </div>
                 </div>
             </section>
 

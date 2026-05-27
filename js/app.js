@@ -1,7 +1,9 @@
 // DOM Elements
 const memoTitleInput = document.getElementById('memoTitle');
 const memoContentInput = document.getElementById('memoContent');
+const editingIdInput = document.getElementById('editingId');
 const addMemoBtn = document.getElementById('addMemoBtn');
+const cancelEditBtn = document.getElementById('cancelEditBtn');
 const memoListContainer = document.getElementById('memoList');
 const searchInput = document.getElementById('searchInput');
 const emptyState = document.getElementById('emptyState');
@@ -10,6 +12,7 @@ const fairySpeech = document.getElementById('fairySpeech');
 
 // Application State
 let memos = [];
+let isEditing = false;
 const fairyDialogues = [
     "✨ 魔法の時間だよ！",
     "🌸 今日もいい日になるね",
@@ -46,7 +49,8 @@ function saveMemos() {
 
 // Setup Event Listeners
 function setupEventListeners() {
-    addMemoBtn.addEventListener('click', addMemo);
+    addMemoBtn.addEventListener('click', handleAddOrUpdate);
+    cancelEditBtn.addEventListener('click', cancelEdit);
     searchInput.addEventListener('input', handleSearch);
     
     if (fairy) {
@@ -73,8 +77,8 @@ function showFairyDialogue() {
     }, 3000);
 }
 
-// Add a new memo
-function addMemo() {
+// Handle Add or Update
+function handleAddOrUpdate() {
     const title = memoTitleInput.value.trim();
     const content = memoContentInput.value.trim();
 
@@ -83,17 +87,20 @@ function addMemo() {
         return;
     }
 
+    if (isEditing) {
+        updateMemo(title, content);
+    } else {
+        addMemo(title, content);
+    }
+}
+
+// Add a new memo
+function addMemo(title, content) {
     const newMemo = {
         id: Date.now(),
         title: title || '無題のメモ',
         content: content,
-        date: new Date().toLocaleDateString('ja-JP', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit'
-        })
+        date: formatDate(new Date())
     };
 
     memos.unshift(newMemo);
@@ -105,8 +112,72 @@ function addMemo() {
     triggerAnimalJoy();
 
     // Clear inputs
+    clearInputs();
+}
+
+// Edit a memo (populate inputs)
+function editMemo(id) {
+    const memo = memos.find(m => m.id === id);
+    if (!memo) return;
+
+    memoTitleInput.value = memo.title === '無題のメモ' ? '' : memo.title;
+    memoContentInput.value = memo.content;
+    editingIdInput.value = id;
+    
+    isEditing = true;
+    addMemoBtn.textContent = '更新';
+    cancelEditBtn.classList.remove('hidden');
+    
+    // Scroll to top to see inputs
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Update an existing memo
+function updateMemo(title, content) {
+    const id = parseInt(editingIdInput.value);
+    const index = memos.findIndex(m => m.id === id);
+    
+    if (index !== -1) {
+        memos[index] = {
+            ...memos[index],
+            title: title || '無題のメモ',
+            content: content,
+            date: formatDate(new Date()) + ' (更新済)'
+        };
+        
+        saveMemos();
+        renderMemos();
+        cancelEdit();
+        
+        // --- Magic Effects ---
+        createMagicParticles();
+    }
+}
+
+// Cancel Editing
+function cancelEdit() {
+    isEditing = false;
+    addMemoBtn.textContent = '追加';
+    cancelEditBtn.classList.add('hidden');
+    clearInputs();
+}
+
+// Helper to clear inputs
+function clearInputs() {
     memoTitleInput.value = '';
     memoContentInput.value = '';
+    editingIdInput.value = '';
+}
+
+// Helper to format date
+function formatDate(date) {
+    return date.toLocaleDateString('ja-JP', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
 }
 
 // Function to create magic particles (stars, sparkles)
@@ -164,6 +235,11 @@ function triggerAnimalJoy() {
 
 // Delete a memo
 function deleteMemo(id) {
+    if (isEditing && parseInt(editingIdInput.value) === id) {
+        alert('編集中はこのメモを削除できません。');
+        return;
+    }
+    
     if (confirm('このメモを削除してもよろしいですか？')) {
         memos = memos.filter(memo => memo.id !== id);
         saveMemos();
@@ -200,7 +276,10 @@ function renderMemos(filter = '') {
                 <p>${escapeHTML(memo.content)}</p>
                 <div class="memo-footer">
                     <span>${memo.date}</span>
-                    <button class="delete-btn" onclick="deleteMemo(${memo.id})">削除</button>
+                    <div class="memo-actions">
+                        <button class="edit-btn" onclick="editMemo(${memo.id})">編集</button>
+                        <button class="delete-btn" onclick="deleteMemo(${memo.id})">削除</button>
+                    </div>
                 </div>
             `;
             

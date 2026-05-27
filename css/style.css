@@ -297,7 +297,13 @@ header h1 {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
+.input-card .button-group {
+    display: flex;
+    gap: 15px;
+}
+
 .input-card button {
+    flex: 1;
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, var(--accent-color) 100%);
     background-size: 200% auto;
     color: white;
@@ -311,6 +317,15 @@ header h1 {
     box-shadow: 0 5px 15px rgba(0,0,0,0.4);
     text-transform: uppercase;
     letter-spacing: 2px;
+}
+
+#cancelEditBtn {
+    background: linear-gradient(135deg, #666 0%, #444 100%);
+    background-size: 200% auto;
+}
+
+.hidden {
+    display: none !important;
 }
 
 .input-card button:hover {
@@ -368,7 +383,12 @@ header h1 {
     color: var(--text-muted);
 }
 
-.delete-btn {
+.memo-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.edit-btn, .delete-btn {
     background: rgba(147, 112, 219, 0.2);
     border: 1px solid var(--secondary-color);
     color: var(--text-color);
@@ -377,6 +397,12 @@ header h1 {
     padding: 8px 16px;
     border-radius: 20px;
     transition: var(--transition);
+}
+
+.edit-btn:hover {
+    background-color: rgba(0, 255, 239, 0.2);
+    border-color: var(--accent-color);
+    transform: scale(1.1);
 }
 
 .delete-btn:hover {
